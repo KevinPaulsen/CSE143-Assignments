@@ -39,7 +39,7 @@ public class ElectionSimulator {
         }
 
         int minVotes = Integer.MAX_VALUE;
-        Set<State> minRequiredPopularVote = null;
+        Set<State> result = null;
 
         for (int currentIdx = stateIndex; currentIdx < states.size(); currentIdx++) {
             State currentState = states.get(currentIdx);
@@ -51,12 +51,12 @@ public class ElectionSimulator {
                 int numVotes = minPopularVotes(minRemainingStates);
                 if (numVotes < minVotes) {
                     minVotes = numVotes;
-                    minRequiredPopularVote = new HashSet<>(minRemainingStates);
+                    result = new HashSet<>(minRemainingStates);
                 }
             }
         }
-        combinations.put(arguments, minRequiredPopularVote);
-        return minRequiredPopularVote;
+        combinations.put(arguments, result);
+        return result;
     }
 
     public static int minElectoralVotes(List<State> states) {
