@@ -22,9 +22,7 @@ public class ElectionSimulator {
     }
 
     Set<State> simulate() {
-        Set<State> test = simulate(minElectoralVotes(states), 0);
-        System.out.println(combinations.size());
-        return test;
+        return simulate(minElectoralVotes(states), 0);
     }
 
     private Set<State> simulate(int electoralVotesRemaining, int stateIndex) {
@@ -125,16 +123,27 @@ public class ElectionSimulator {
 
     public static void main(String[] args) throws FileNotFoundException {
         List<State> states = new ArrayList<>(51);
-        try (Scanner input = new Scanner(new File("/Users/kevinpaulsen/dev/cse143_projects/src/main/java/election_simulator/data/1828.csv"))) {
+        try (Scanner input = new Scanner(new File("/Users/kevinpaulsen/dev/cse143_projects/src/main/java/election_simulator/data/2016.csv"))) {
             while (input.hasNextLine()) {
                 states.add(State.fromCsv(input.nextLine()));
             }
         }
+        new ElectionSimulator(states).simulate();
+        new ElectionSimulator(states).simulate();
+        new ElectionSimulator(states).simulate();
+        new ElectionSimulator(states).simulate();
+        new ElectionSimulator(states).simulate();
+
+        long startTime = System.currentTimeMillis();
         Set<State> result = new ElectionSimulator(states).simulate();
-        System.out.println(result);
+        long endTime = System.currentTimeMillis();
+        System.out.println(((double) endTime - startTime) + " milliseconds\n\n");
+
+
+        /*System.out.println(result);
         System.out.println(minPopularVotes(result) + " votes");
         System.out.println(minElectoralVotes(states) + " min electoral votes");
         System.out.println(totalElectoralVotes(result) + " electoral votes");
-        System.out.println(((double) minPopularVotes(result)) / totalVotes(states) * 100 + "%");
+        System.out.println(((double) minPopularVotes(result)) / totalVotes(states) * 100 + "%");//*/
     }
 }
