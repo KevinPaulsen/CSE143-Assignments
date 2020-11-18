@@ -9,4 +9,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {}
+dependencies {
+    implementation("com.github.haifengl:smile-kotlin:2.5.3")
+}

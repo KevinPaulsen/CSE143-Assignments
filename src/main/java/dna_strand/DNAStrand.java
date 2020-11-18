@@ -11,11 +11,10 @@ package dna_strand;
  */
 public class DNAStrand {
     private Nucleotide front;
-    private final int size;
 
     /**
      * Package-private constructor that constructs a new DNAStrand that
-     * assigns each character in the String parameter 'dna' to a Nucleotide.
+     * assumes each character in 'dna' is a nucleotide in a sequence.
      * The parameter 'dna' may not be null. If 'dna' is empty, then a
      * DNAStrand containing zero nucleotides is created.
      *
@@ -23,7 +22,6 @@ public class DNAStrand {
      *            Each letter representing a nucleotide.
      */
     public DNAStrand(String dna) {
-        size = dna.length();
         if (dna.length() > 0) {
             front = new Nucleotide(dna.charAt(0));
             Nucleotide current = front;
@@ -51,8 +49,9 @@ public class DNAStrand {
         while (current != null) {
             int numRepeats = countRepeat(current, substrand);
             maxConsecutiveRepeats = Math.max(numRepeats, maxConsecutiveRepeats);
-            current = pruneNucleotides(current,
-                    numRepeats * substrand.size - (substrand.size / 2));
+            current = current.next;
+            //current = pruneNucleotides(current,
+            //        numRepeats * substrand.size - (substrand.size / 2));
         }
 
         return maxConsecutiveRepeats;
@@ -72,7 +71,7 @@ public class DNAStrand {
         while (originalCurrent != null) {
             Nucleotide substrandCurrent = substrand.front;
             // Loop until either originalCurrent or substrand dont have a next.
-            while (originalCurrent != null && substrandCurrent != null) {
+            do {
                 if (originalCurrent.data == substrandCurrent.data) {
                     // If both nucleotides are the same, then set both to their next.
                     originalCurrent = originalCurrent.next;
@@ -81,30 +80,10 @@ public class DNAStrand {
                     // If both nucleotides are not the same, return numRepeats.
                     return numRepeats;
                 }
-            }
+            } while (originalCurrent != null && substrandCurrent != null);
             numRepeats++;
         }
         return numRepeats;
-    }
-
-    /**
-     * Private method that returns the nucleotide 'numPrune' times after
-     * 'current'. If numPrune is less-than or equal to zero, the the
-     * Nucleotide after current is returned.
-     *
-     * @param current the current Nucleotide.
-     * @param numPrune the number of Nucleotides to skip over.
-     * @return the Nucleotide 'numPrune' after current.
-     */
-    private Nucleotide pruneNucleotides(Nucleotide current, int numPrune) {
-        if (numPrune <= 0 && current != null) {
-            return current.next;
-        }
-        while (numPrune > 0 && current != null) {
-            current = current.next;
-            numPrune--;
-        }
-        return current;
     }
 
     /**
